@@ -35,7 +35,7 @@ docker rmi $(docker images -f "dangling=true" -q) -f
 
 Make the script executable:
 
-`chmod u+x dup`
+`chmod u+x $HOME/bin/dup`
 
 # Use
 
