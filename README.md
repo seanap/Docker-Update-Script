@@ -1,5 +1,5 @@
 # Docker-Update-Script
-Create a script to run the 4 docker commands needed to force pull/upgrade docker apps.  Add this to path and make an executable from anywhere command
+Create a script to run the 4 docker commands needed to force pull/upgrade docker apps using docker-compose.  Add this to path to make an executable from anywhere command.
 
 # Install
 
@@ -16,7 +16,7 @@ Create a script to run the 4 docker commands needed to force pull/upgrade docker
 
 ### Create the `dup` script:
 
-`nano $HOME/bin/dup`
+* `nano $HOME/bin/dup`
 
 Copy the script below:
 
@@ -35,7 +35,7 @@ docker rmi $(docker images -f "dangling=true" -q) -f
 
 Make the script executable:
 
-`chmod u+x $HOME/bin/dup`
+* `chmod u+x $HOME/bin/dup`
 
 # Use
 
