@@ -3,24 +3,41 @@ Create a script to run the 4 docker commands needed to force pull/upgrade docker
 
 # Install
 
-Make a userscript directory:
-`mkdir $HOME/bin`
 
-Download the `dup` script from `https://github.com/seanap/Docker-Update-Script/blob/main/dup`
+### Make a userscript directory and add to PATH
 
-Copy the script into `$HOME/bin`
+* `mkdir $HOME/bin`
+
+* `PATH=$HOME/bin:$PATH`
+  
+* `source .profile`
+
+---
+
+### Create the `dup` script:
+
+`nano $HOME/bin/dup`
+
+Copy the script below:
+
+```bash
+#!/bin/bash
+cd
+
+docker-compose down
+
+docker-compose pull
+
+docker-compose up -d --force-recreate
+
+docker rmi $(docker images -f "dangling=true" -q) -f
+```
 
 Make the script executable:
+
 `chmod u+x dup`
 
-Add userscript directory to PATH and environment:
-`PATH=$HOME/bin:$PATH
-sudo nano /etc/environment`
-Add `:$HOME/bin` to the PATH line
-Save and exit
-`source /etc/environment`
-
-#Use
+# Use
 
 To update all dockers, type `dup` into the terminal.
 
