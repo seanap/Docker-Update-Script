@@ -37,6 +37,8 @@ Make the script executable:
 
 * `chmod u+x $HOME/bin/dup`
 
+---
+
 ### Create the `aup` (apt-get update/upgrade) script:
 
 * `nano $HOME/bin/aup`
@@ -53,8 +55,11 @@ Make the script executable:
 
 * `chmod u+x $HOME/bin/aup`
 
+---
+
 # Use
 
 To update/upgrade Ubuntu, type `aup` into the terminal
+
 To update/upgrade all docker containers, type `dup` into the terminal.
 
