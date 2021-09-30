@@ -60,8 +60,19 @@ Copy the script below:
 
 ```bash
 #!/bin/bash
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+echo -e "${CYAN}apt-get update${NC}"
 sudo apt-get update
+
+echo -e "${CYAN}apt-get upgrade${NC}"
 sudo apt-get upgrade -y
+
+echo -e "${CYAN}apt-get autoremove${NC}"
+sudo apt autoremove -y
+echo -e "${GREEN}FINISHED${NC}"
 ```
 
 Make the script executable:
