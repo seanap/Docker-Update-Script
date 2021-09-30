@@ -22,21 +22,28 @@ Copy the script below:
 
 ```bash
 #!/bin/bash
-
-#Change dir to $HOME where your docker-compose.yml file is located
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+echo -e "${CYAN}Change dir to $HOME where your docker-compose.yml file is located${NC}"
 cd
 
-#Stop all containers
+echo -e "${CYAN}Stop all containers${NC}"
 docker-compose down
+echo -e "${GREEN}All Containers have been Stopped${NC}"
 
-#Pull the latest container release
+echo -e "${CYAN}Pull the latest container release${NC}"
 docker-compose pull
+echo -e "${GREEN}Finished Pull${NC}"
 
-#Start all containers, detatched, and recreate the image with the latest release
+echo -e "${CYAN}Starting all containers, detatched, and recreating the image using the latest release${NC}"
 docker-compose up -d --force-recreate
+echo -e "${GREEN}Successfully recreated and started all containers${NC}"
 
-#Delete the old unused container images
+echo -e "${CYAN}Delete the old unused container images${NC}"
 docker images -q -f dangling=true | xargs --no-run-if-empty --delim='\n' docker rmi
+echo -e "${GREEN}Successfully cleaned up${NC}"
+echo -e "${GREEN}FINISHED${NC}"
 ```
 
 Make the script executable:
