@@ -36,7 +36,7 @@ docker-compose pull
 docker-compose up -d --force-recreate
 
 #Delete the old unused container images
-docker rmi $(docker images -f "dangling=true" -q) -f
+docker images -q -f dangling=true | xargs --no-run-if-empty --delim='\n' docker rmi
 ```
 
 Make the script executable:
