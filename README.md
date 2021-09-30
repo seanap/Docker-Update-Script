@@ -22,14 +22,20 @@ Copy the script below:
 
 ```bash
 #!/bin/bash
+
+#Change dir to $HOME where your docker-compose.yml file is located
 cd
 
+#Stop all containers
 docker-compose down
 
+#Pull the latest container release
 docker-compose pull
 
+#Start all containers, detatched, and recreate the image with the latest release
 docker-compose up -d --force-recreate
 
+#Delete the old unused container images
 docker rmi $(docker images -f "dangling=true" -q) -f
 ```
 
