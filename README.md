@@ -93,10 +93,32 @@ Make the script executable:
 ### Automated
 
 * `crontab -e`
-* Add the three lines below, in my example it runs `aup` everyother day at 4am, and `dup` once a week on sat morning:
+* Add the two lines below, in my example it runs `dup` once a week, 6am on sat:
 ```
 shell=/bin/bash
-0 4 * * 1/2 aup
 0 6 * * 6 dup
 ```
+* Best not to automate aup, if you want automated security upgrades use a package called `unattended-upgrades`
+  1. Update the server, run:  
+    `aup`  
+  2. Install unattended upgrades on Ubuntu:  
+    `sudo apt install unattended-upgrades apt-listchanges bsd-mailx`  
+  3. Turn on unattended security updates, run:  
+    `sudo dpkg-reconfigure -plow unattended-upgrades`  
+  4. Configure automatic updates, enter:  
+    `sudo nano /etc/apt/apt.conf.d/50unattended-upgrades`  
+    `Unattended-Upgrade::Automatic-Reboot "false";`  
+  5. Verify that it is working by running the following command:  
+    `sudo unattended-upgrades --dry-run`  
 
+# Notes:
+
+* If there are any docker containers that you do NOT want updated, look up the available [TAG's](https://hub.docker.com/r/linuxserver/plex/tags?page=1&ordering=last_updated),  
+  edit `docker-compose.yml` and include the specific TAG version after a `:` when defining the image:  
+```
+nano docker-compose.yml
+...
+  plex:
+    image: linuxserver/plex:1.24.3.5033-757abe6b4-ls76
+...
+```
