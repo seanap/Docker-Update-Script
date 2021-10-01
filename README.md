@@ -36,14 +36,11 @@ Help()
    # Display Help
    echo "Down, Pull, Up, rmi"
    echo
-   echo "Syntax: dup [-h|e|o]"
+   echo "Syntax: dup [-h|o]"
    echo "options:"
    echo "h     Print this Help."
    echo
-   echo "e     Excludes specific service"
-   echo "      Example: dup -e plex #Excludes plex from shutdown and new pull"
-   echo
-   echo "o     Only runs on specifid server"
+   echo "o     Only runs on a specific container"
    echo "      Example: dup -o plex #Only updates the Plex image"
    echo
 }
@@ -55,12 +52,11 @@ GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
 # Get the options
-while getopts ":he:o:" option; do
+while getopts ":ho:" option; do
    case $option in
       h) # display Help
          Help
          exit;;
-      e) service="--scale ${OPTARG}=0";;
       o) service=${OPTARG};;
      \?) # incorrect option
          echo "Error: Invalid option"
@@ -73,17 +69,17 @@ cd
 
 if [[ $service ]]
 then
-  echo -e "${CYAN}Stopping containers...${NC}"
-  docker-compose down $service
+  echo -e "${CYAN}Stopping $service container...${NC}"
+  docker-compose rm -fsv $service
 else
   echo -e "${CYAN}Stopping all containers...${NC}"
   docker-compose down
 fi
-echo -e "${GREEN}All Containers have been Stopped${NC}"
+echo -e "${GREEN}Finished Stopping${NC}"
 
 if [[ $service ]]
 then
-  echo -e "${CYAN}Pulling containers...${NC}"
+  echo -e "${CYAN}Pulling $service container...${NC}"
   docker-compose pull $service
 else
   echo -e "${CYAN}Pulling all containers...${NC}"
@@ -93,13 +89,13 @@ echo -e "${GREEN}Finished Pull${NC}"
 
 if [[ $service ]]
 then
-  echo -e "${CYAN}Starting containers...${NC}"
+  echo -e "${CYAN}Starting $service container...${NC}"
   docker-compose up -d --force-recreate $service
 else
   echo -e "${CYAN}Starting all containers...${NC}"
   docker-compose up -d --force-recreate
 fi
-echo -e "${GREEN}Successfully recreated and started all containers${NC}"
+echo -e "${GREEN}Successfully recreated and started containers${NC}"
 
 echo -e "${CYAN}Deleting the old unused container images...${NC}"
 docker images -q -f dangling=true | xargs --no-run-if-empty --delim='\n' docker rmi
