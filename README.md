@@ -15,15 +15,14 @@ Create a script to run the 4 docker commands needed to force pull/upgrade docker
 ### Make a userscript directory and add to PATH
 
 * `mkdir $HOME/bin`
-
 * `nano $HOME/.bashrc`
-* `Alt+ /` (Alt+ Forward Slash) Jump to last line.
-* Copy and paste the below to the end of the file:  
+  * `Alt+ /` (Alt+ Forward Slash) Jump to last line.  
+  * Copy and paste the below to the end of the file:  
 ```
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
-```
+```  
 * Initialize changes:  
   `. ~/.bashrc`
 
@@ -181,12 +180,12 @@ Make the script executable:
 ### Automated
 
 * `crontab -e`
-* `Alt+ /` (Alt+ Forward Slash) Jump to last line.
-* Add the two lines below, in my example it runs `dup` once a week, 6am on sat:
+  * `Alt+ /` (Alt+ Forward Slash) Jump to last line.  
+  * Add the two lines below, in my example it runs `dup` once a week, 6am on sat:  
 ```
 shell=/bin/bash
 0 6 * * 6 . $HOME/.bashrc; dup
-```
+```  
 * Best not to automate aup, if you want automated security upgrades use a package called `unattended-upgrades`
   1. Update the server, run:  
     `aup`  
