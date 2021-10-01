@@ -77,7 +77,7 @@ while getopts "hio:e:" option; do
          Help
          exit;;
       o) service=${OPTARG}
-	        only="True";;
+	 only="True";;
       e) service=${OPTARG}
          exclude="True";;
       i) echo -e "$(docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }}' | sed 's/\///')"
