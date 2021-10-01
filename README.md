@@ -15,6 +15,7 @@ Create a script to run the 4 docker commands needed to force pull/upgrade docker
 * `mkdir $HOME/bin`
 
 * `nano $HOME/.bashrc`
+* `Alt+ /` (Alt+ Forward Slash) Jump to last line.
 * Copy and paste at the end of the file:  
 ```
 if [ -d "$HOME/bin" ] ; then
@@ -160,6 +161,7 @@ Make the script executable:
 ### Automated
 
 * `crontab -e`
+* `Alt+ /` (Alt+ Forward Slash) Jump to last line.
 * Add the two lines below, in my example it runs `dup` once a week, 6am on sat:
 ```
 shell=/bin/bash
