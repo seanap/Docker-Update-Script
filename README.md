@@ -1,6 +1,12 @@
 # Docker-Update-Script
 Create a script to run the 4 docker commands needed to force pull/upgrade docker apps using docker-compose.  Add this to path to make an executable from anywhere command, and automate with CRON.
 
+### Prerequisites
+* [docker-ce](https://docs.docker.com/engine/install/ubuntu/) installed
+* [docker-compose](https://docs.docker.com/compose/install/) installed
+* `docker-compose.yml` file in $HOME
+  * Sample - [pastebin.com/sK9dMeet](https://pastebin.com/sK9dMeet)
+
 # Install
 
 
@@ -163,7 +169,7 @@ shell=/bin/bash
   1. Update the server, run:  
     `aup`  
   2. Install unattended upgrades on Ubuntu:  
-    `sudo apt install unattended-upgrades apt-listchanges bsd-mailx`  
+    `sudo apt install unattended-upgrades apt-listchanges bsd-mailx -y`  
   3. Turn on unattended security updates, run:  
     `sudo dpkg-reconfigure -plow unattended-upgrades`  
   4. Configure automatic updates, enter:  
@@ -177,9 +183,8 @@ shell=/bin/bash
 
 # Notes:
 
-* If there are any docker containers that you do NOT want updated, look up the available [TAG's](https://hub.docker.com/r/linuxserver/plex/tags?page=1&ordering=last_updated),  
-  edit `docker-compose.yml` and include the specific TAG version after a `:` when defining the image.  
-  Example below locks plex to version 1.24.3:
+* If there are any docker containers that you do NOT want updated to the latest version, look up the available [TAG's](https://hub.docker.com/r/linuxserver/plex/tags?page=1&ordering=last_updated), then edit `docker-compose.yml` and include the specific TAG name after a `:` when defining the image.  
+  * Example below locks plex to version 1.24.3:  
 ```
 nano docker-compose.yml
 ...
