@@ -35,20 +35,26 @@ Copy the script below:
 
 ```bash
 #!/bin/bash
-source $HOME/.bashrc
+. ~/.bashrc
 
 # Help File
 Help()
 {
    # Display Help
+   echo
    echo "   docker-compose [ Down | Pull | Up | rmi ]"
    echo
-   echo -e "   Syntax: ${GREEN}dup [-h|o] [SERVICE...]${NC}"
+   echo -e "   Syntax: ${GREEN}dup [-h|o|e|i] [SERVICE...]${NC}"
    echo "   options:"
    echo "       -h      Print this Help."
    echo
+   echo "       -i      Prints Current image list"
+   echo
    echo "       -o      Only runs on a specific container"
    echo -e "               Example: ${GREEN}dup -o plex${NC} #Only update the Plex image"
+   echo
+   echo "       -e      Excludes a specific container"
+   echo -e "               Example: ${GREEN}dup -e plex${NC} #Keeps plex running while shutting down and updating all other containers."  
    echo
    echo -e "   <none>      Updates ALL containers in ${CYAN}docker-compose.yml${NC}"
    echo -e "               Example: ${GREEN}dup${NC}"
@@ -56,66 +62,76 @@ Help()
 }
 
 # Set Variables
+ERROR_FILE="/tmp/docker-update.error"
+only=''
+exclude=''
 service=''
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
 
 # Get the options
-while getopts ":ho:" option; do
+while getopts "hio:e:" option; do
    case $option in
       h) # display Help
          Help
          exit;;
-      o) service=${OPTARG};;
+      o) service=${OPTARG}
+	        only="True";;
+      e) service=${OPTARG}
+         exclude="True";;
+      i) echo -e "$(docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }}' | sed 's/\///')"
+         exit;; 
      \?) # incorrect option
          echo "Error: Invalid option"
          exit;;
    esac
 done
 
-echo -e "${CYAN}Change dir to $HOME where your docker-compose.yml file is located${NC}"
-cd
-
-if [[ $service ]]
+if [[ $only ]]
 then
   echo -e "${CYAN}Stopping $service container...${NC}"
   docker-compose rm -fsv $service
-else
-  echo -e "${CYAN}Stopping all containers...${NC}"
-  docker-compose down
-fi
-echo -e "${GREEN}Finished Stopping${NC}"
-
-if [[ $service ]]
-then
   echo -e "${CYAN}Pulling $service container...${NC}"
   docker-compose pull $service
-else
-  echo -e "${CYAN}Pulling all containers...${NC}"
-  docker-compose pull
-fi
-echo -e "${GREEN}Finished Pull${NC}"
-
-if [[ $service ]]
-then
   echo -e "${CYAN}Starting $service container...${NC}"
   docker-compose up -d --force-recreate $service
+elif [[ $exclude ]]
+then
+  # get a list of docker images that are currently installed
+  IMAGES_OUTPUT=$(docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }}' | grep -v $service | grep -v "<none>" | sed 's/\///')
+  for IMAGE in $IMAGES_OUTPUT; do
+    echo "*****"
+    echo -e "Updating $IMAGE"
+    docker-compose rm -sfv $IMAGE
+	docker pull $IMAGE 2> $ERROR_FILE
+	docker-compose up -d --force-recreate $IMAGE
+    if [ $? != 0 ]; then
+      ERROR=$(cat $ERROR_FILE | grep "not found")
+      if [ "$ERROR" != "" ]; then
+        echo -e "WARNING: Docker image $IMAGE not found in repository, skipping"
+      else
+        echo -e "ERROR: docker pull failed on image - $IMAGE"
+        exit 2
+      fi
+    fi
+    echo "*****"
+    echo
+  done
 else
-  echo -e "${CYAN}Starting all containers...${NC}"
+  docker-compose down
+  docker-compose pull
   docker-compose up -d --force-recreate
-fi
-echo -e "${GREEN}Successfully recreated and started containers${NC}"
-
+fi 
 echo -e "${CYAN}Deleting the old unused container images...${NC}"
-docker images -q -f dangling=true | xargs --no-run-if-empty --delim='\n' docker rmi
+docker system prune -af
 echo -e "${GREEN}Successfully cleaned up${NC}"
 echo -e "${GREEN}FINISHED${NC}"
 ```
 
 Make the script executable:
 
-* `chmod u+x $HOME/bin/dup`
+* `chmod +x $HOME/bin/dup`
 
 ---
 
@@ -145,7 +161,7 @@ echo -e "${GREEN}FINISHED${NC}"
 
 Make the script executable:
 
-* `chmod u+x $HOME/bin/aup`
+* `chmod +x $HOME/bin/aup`
 
 ---
 
@@ -156,7 +172,9 @@ Make the script executable:
 * To update/upgrade Ubuntu, type `aup` into the terminal
 * To update/upgrade ALL docker containers, type `dup` into the terminal
 * To update/upgrade a specific container, type `dup -o [SERVICE...]` into the terminal
-  * Ex. `dup -o plex`
+  * Ex. `dup -o plex` will only take plex down and update it.
+* To keep a specific container running and update/upgrade all other containers, type `dup -e [SERVICE...]` into the terminal
+  * Ex. `dup -e plex` will leave plex up and running and take down all other images to update them.
 
 ### Automated
 
