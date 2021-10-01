@@ -43,7 +43,7 @@ Help()
    echo "       -o      Only runs on a specific container"
    echo -e "               Example: ${GREEN}dup -o plex${NC} #Only update the Plex image"
    echo
-   echo "   <none>      Updates ALL containers in ${CYAN}docker-compose.yml${NC}"
+   echo -e "   <none>      Updates ALL containers in ${CYAN}docker-compose.yml${NC}"
    echo -e "               Example: ${GREEN}dup${NC}"
    echo
 }
