@@ -16,7 +16,7 @@ Create a script to run the 4 docker commands needed to force pull/upgrade docker
 
 * `nano $HOME/.bashrc`
 * `Alt+ /` (Alt+ Forward Slash) Jump to last line.
-* Copy and paste at the end of the file:  
+* Copy and paste the below to the end of the file:  
 ```
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
