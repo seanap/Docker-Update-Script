@@ -1,5 +1,5 @@
 # Docker-Update-Script
-Create a script to run the 4 docker commands needed to force pull/upgrade docker apps using docker-compose.  Add this to path to make an executable from anywhere command.
+Create a script to run the 4 docker commands needed to force pull/upgrade docker apps using docker-compose.  Add this to path to make an executable from anywhere command, and automate with CRON.
 
 # Install
 
@@ -96,7 +96,7 @@ Make the script executable:
 * Add the two lines below, in my example it runs `dup` once a week, 6am on sat:
 ```
 shell=/bin/bash
-0 6 * * 6 dup
+0 6 * * 6 . $HOME/.profile; dup
 ```
 * Best not to automate aup, if you want automated security upgrades use a package called `unattended-upgrades`
   1. Update the server, run:  
