@@ -41,9 +41,9 @@ source $HOME/.bashrc
 Help()
 {
    # Display Help
-   echo "   docker-compose [Down | Pull | Up | rmi]"
+   echo "   docker-compose [ Down | Pull | Up | rmi ]"
    echo
-   echo "   Syntax: dup [-h|o] [SERVICE]"
+   echo -e "   Syntax: ${GREEN}dup [-h|o] [SERVICE...]${NC}"
    echo "   options:"
    echo "       -h      Print this Help."
    echo
@@ -155,7 +155,7 @@ Make the script executable:
 
 * To update/upgrade Ubuntu, type `aup` into the terminal
 * To update/upgrade ALL docker containers, type `dup` into the terminal
-* To update/upgrade a specific container, type `dup -o [SERVICE]` into the terminal
+* To update/upgrade a specific container, type `dup -o [SERVICE...]` into the terminal
   * Ex. `dup -o plex`
 
 ### Automated
