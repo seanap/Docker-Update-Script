@@ -22,6 +22,7 @@ Copy the script below:
 
 ```bash
 #!/bin/bash
+source $HOME/.profile
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
@@ -60,6 +61,7 @@ Copy the script below:
 
 ```bash
 #!/bin/bash
+source $HOME/.profile
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
 NC='\033[0m' # No Color
