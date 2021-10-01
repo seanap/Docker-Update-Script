@@ -85,7 +85,18 @@ Make the script executable:
 
 # Use
 
-To update/upgrade Ubuntu, type `aup` into the terminal
+### Manual
 
-To update/upgrade all docker containers, type `dup` into the terminal.
+* To update/upgrade Ubuntu, type `aup` into the terminal
+* To update/upgrade all docker containers, type `dup` into the terminal.
+
+### Automated
+
+* `crontab -e`
+* Add the three lines below, in my example it runs `aup` everyother day at 4am, and `dup` once a week on sat morning:
+```
+shell=/bin/bash
+0 4 * * 1/2 aup
+0 6 * * 6 dup
+```
 
