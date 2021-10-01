@@ -147,7 +147,9 @@ Make the script executable:
 ### Manual
 
 * To update/upgrade Ubuntu, type `aup` into the terminal
-* To update/upgrade all docker containers, type `dup` into the terminal.
+* To update/upgrade ALL docker containers, type `dup` into the terminal
+* To update/upgrade a specific container, type `dup -o [SERVICE]` into the terminal
+  * Ex. `dup -o plex`
 
 ### Automated
 
