@@ -1,6 +1,8 @@
 # Docker-Update-Script
 Create a script to run the 4 docker commands needed to force pull/upgrade docker apps using docker-compose.  Add this to path to make an executable from anywhere command, and automate with CRON.
 
+![](dup.gif)
+
 ### Prerequisites
 * [docker-ce](https://docs.docker.com/engine/install/ubuntu/) installed
 * [docker-compose](https://docs.docker.com/compose/install/) installed
