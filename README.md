@@ -34,14 +34,14 @@ source $HOME/.bashrc
 Help()
 {
    # Display Help
-   echo "Down, Pull, Up, rmi"
+   echo "   docker-compose [Down | Pull | Up | rmi]"
    echo
-   echo "Syntax: dup [-h|o]"
-   echo "options:"
-   echo "h     Print this Help."
+   echo "   Syntax: dup [-h|o] [SERVICE]"
+   echo "   options:"
+   echo "       -h      Print this Help."
    echo
-   echo "o     Only runs on a specific container"
-   echo "      Example: dup -o plex #Only updates the Plex image"
+   echo "       -o      Only runs on a specific container"
+   echo -e "               Example: ${GREEN}dup -o plex${NC} #Only update the Plex image"
    echo
 }
 
