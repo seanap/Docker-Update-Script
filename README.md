@@ -91,10 +91,10 @@ done
 
 if [[ $only ]]
 then
-  echo -e "${CYAN}Stopping $service container...${NC}"
-  docker-compose rm -fsv $service
   echo -e "${CYAN}Pulling $service container...${NC}"
   docker-compose pull $service
+  echo -e "${CYAN}Stopping $service container...${NC}"
+  docker-compose rm -fsv $service
   echo -e "${CYAN}Starting $service container...${NC}"
   docker-compose up -d --force-recreate $service
 elif [[ $exclude ]]
@@ -104,9 +104,9 @@ then
   for IMAGE in $IMAGES_OUTPUT; do
     echo "*****"
     echo -e "Updating $IMAGE"
+    docker pull $IMAGE 2> $ERROR_FILE
     docker-compose rm -sfv $IMAGE
-	docker pull $IMAGE 2> $ERROR_FILE
-	docker-compose up -d --force-recreate $IMAGE
+    docker-compose up -d --force-recreate $IMAGE
     if [ $? != 0 ]; then
       ERROR=$(cat $ERROR_FILE | grep "not found")
       if [ "$ERROR" != "" ]; then
@@ -120,8 +120,8 @@ then
     echo
   done
 else
-  docker-compose down
   docker-compose pull
+  docker-compose down
   docker-compose up -d --force-recreate
 fi 
 echo -e "${CYAN}Deleting the old unused container images...${NC}"
