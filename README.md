@@ -1,5 +1,7 @@
 # Docker-Update-Script
-Create a script to run the 4 docker commands needed to force pull/upgrade docker apps using docker-compose.  Add this to path to make an executable from anywhere command, and automate with CRON.
+Create a script to run the 4 docker commands needed to force pull/upgrade docker apps using docker-compose.  Add this to path to make an executable from anywhere command, and automate with CRON.  
+
+This script runs the following commands in this order: pull; down; up; rmi.  One of the main benifits of this script is being able to chose to update all containers, or to only update a single container in your docker-compose, or to exclude a specific container from stopping but updating the rest.
 
 ![](dup.gif)
 
@@ -204,8 +206,10 @@ shell=/bin/bash
 
 # Notes:
 
+* This script is compatible with pihole, I made sure to pull the new image first before stopping the container and re-creating.  Pihole is a little tricky since once you stop the pihole docker you will lose DNS and be unable to pull the :latest image, which is why we pull the image first.  
 * If there are any docker containers that you do NOT want updated to the latest version, look up the available [TAG's](https://hub.docker.com/r/linuxserver/plex/tags?page=1&ordering=last_updated), then edit `docker-compose.yml` and include the specific TAG name after a `:` when defining the image.  
-  * Example below locks plex to version 1.24.3:  
+  * Example below locks plex to version 1.24.3:
+ 
 ```
 nano docker-compose.yml
 ...
