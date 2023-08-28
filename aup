@@ -16,13 +16,13 @@ sudo apt-get update
 echo -e "${CYAN}apt-get upgrade${NC}"
 sudo apt-get upgrade -y
 
-echo -e "${CYAN}apt-get autoremove${NC}"
+echo -e "${CYAN}apt autoclean${NC}"
 sudo apt autoclean -y
 
-echo -e "${CYAN}apt-get autoremove${NC}"
+echo -e "${CYAN}apt autoremove${NC}"
 sudo apt autoremove -y
 
-echo -e "${CYAN}apt-get autoremove${NC}"
-sudo apt autoclean -y
+echo -e "${CYAN}apt clean${NC}"
+sudo apt clean -y
 
 echo -e "${GREEN}FINISHED${NC}"
