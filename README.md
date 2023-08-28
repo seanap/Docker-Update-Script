@@ -45,7 +45,7 @@ Help()
 {
    # Display Help
    echo
-   echo "   docker-compose [ Down | Pull | Up | rmi ]"
+   echo "   docker compose V2 [ Pull | Down | Up | rmi ]"
    echo
    echo -e "   Syntax: ${GREEN}dup [-h|o|e|i] [SERVICE...]${NC}"
    echo "   options:"
@@ -59,7 +59,7 @@ Help()
    echo "       -e      Excludes a specific container"
    echo -e "               Example: ${GREEN}dup -e plex${NC} #Keeps plex running while shutting down and updating all other containers."  
    echo
-   echo -e "   <none>      Updates ALL containers in ${CYAN}docker-compose.yml${NC}"
+   echo -e "   <none>      Updates ALL containers in ${CYAN}docker-compose.yaml${NC}"
    echo -e "               Example: ${GREEN}dup${NC}"
    echo
 }
@@ -80,7 +80,7 @@ while getopts "hio:e:" option; do
          Help
          exit;;
       o) service=${OPTARG}
-	 only="True";;
+	        only="True";;
       e) service=${OPTARG}
          exclude="True";;
       i) echo -e "$(docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }}' | sed 's/\///')"
@@ -94,11 +94,11 @@ done
 if [[ $only ]]
 then
   echo -e "${CYAN}Pulling $service container...${NC}"
-  docker-compose pull $service
+  docker compose pull $service
   echo -e "${CYAN}Stopping $service container...${NC}"
-  docker-compose rm -fsv $service
+  docker compose rm -fsv $service
   echo -e "${CYAN}Starting $service container...${NC}"
-  docker-compose up -d --force-recreate $service
+  docker compose up -d --force-recreate $service
 elif [[ $exclude ]]
 then
   # get a list of docker images that are currently installed
@@ -107,8 +107,8 @@ then
     echo "*****"
     echo -e "Updating $IMAGE"
     docker pull $IMAGE 2> $ERROR_FILE
-    docker-compose rm -sfv $IMAGE
-    docker-compose up -d --force-recreate $IMAGE
+    docker compose rm -sfv $IMAGE
+    docker compose up -d --force-recreate $IMAGE
     if [ $? != 0 ]; then
       ERROR=$(cat $ERROR_FILE | grep "not found")
       if [ "$ERROR" != "" ]; then
@@ -122,9 +122,9 @@ then
     echo
   done
 else
-  docker-compose pull
-  docker-compose down
-  docker-compose up -d --force-recreate
+  docker compose pull
+  docker compose down
+  docker compose up -d --force-recreate
 fi 
 echo -e "${CYAN}Deleting the old unused container images...${NC}"
 docker system prune -af
