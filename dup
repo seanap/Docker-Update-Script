@@ -62,12 +62,12 @@ then
   docker compose up -d --force-recreate $service
 elif [[ $exclude ]]
 then
-  # get a list of docker images that are currently installed
-  IMAGES_OUTPUT=$(docker ps -q | xargs -n 1 docker inspect --format '{{ .Name }}' | grep -v $service | grep -v "<none>" | sed 's/\///')
-  for IMAGE in $IMAGES_OUTPUT; do
+  # gather a list of compose service names excluding the one provided
+  SERVICES_OUTPUT=$(docker compose config --services | grep -v "^$service$")
+  for IMAGE in $SERVICES_OUTPUT; do
     echo "*****"
     echo -e "Updating $IMAGE"
-    docker pull $IMAGE 2> $ERROR_FILE
+    docker compose pull $IMAGE 2> $ERROR_FILE
     docker compose rm -sfv $IMAGE
     docker compose up -d --force-recreate $IMAGE
     if [ $? != 0 ]; then
